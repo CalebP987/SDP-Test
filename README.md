@@ -86,6 +86,12 @@ public/app.js       Browser-side API and rendering logic
 test/               Node test suite
 ```
 
+## AI Declaration
+
+- AI tool/model used: Qoder
+- AI was used to assist with interpreting the brief, planning the implementation, generating and refining code, writing tests, debugging issues, and preparing documentation.
+- The submitted work was reviewed, tested, and accepted by the author before submission.
+
 ## Notes for submission
 
 - Submit the URL to a public repository containing this project.
