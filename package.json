@@ -1,0 +1,22 @@
+{
+  "name": "repo-analysis-tool",
+  "version": "1.0.0",
+  "description": "Repo Analysis Tool dashboard for Git repository metrics.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "git",
+    "metrics",
+    "repository-analysis",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

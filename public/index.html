@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Repo Analysis Tool</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">COMS3011A Repo Analysis Tool</p>
+        <h1>RAT Dashboard</h1>
+        <p>Analyze Git history, churn, ownership, volatility, and author impact across multiple repositories.</p>
+      </div>
+      <div class="hero-card">
+        <strong id="repo-count">0</strong>
+        <span>repositories analyzed</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel ingest">
+        <h2>Ingest repository</h2>
+        <div class="tabs">
+          <button class="tab active" data-tab="clone">Remote URL</button>
+          <button class="tab" data-tab="zip">ZIP upload</button>
+        </div>
+        <form id="clone-form" class="tab-panel active">
+          <label>Repository URL</label>
+          <div class="inline">
+            <input id="repo-url" placeholder="https://github.com/DaveGamble/cJSON.git" />
+            <button type="submit">Clone and analyze</button>
+          </div>
+          <small>Uses a full clone so metrics can be calculated over complete history.</small>
+        </form>
+        <form id="zip-form" class="tab-panel" enctype="multipart/form-data">
+          <label>ZIP file containing a .git file or directory</label>
+          <div class="inline">
+            <input id="zip-file" name="repo" type="file" accept=".zip" />
+            <button type="submit">Upload and analyze</button>
+          </div>
+        </form>
+        <div id="status" class="status">Ready.</div>
+      </section>
+
+      <section class="panel repositories">
+        <h2>Repositories</h2>
+        <div id="repo-list" class="repo-list"></div>
+      </section>
+
+      <section class="panel filters">
+        <h2>Filters</h2>
+        <div class="grid two">
+          <label>Repository<select id="repo-select"></select></label>
+          <label>Author<select id="author-select"></select></label>
+          <label>Object<select id="object-select"></select></label>
+          <label>From date<input id="from-date" type="date" /></label>
+          <label>To date<input id="to-date" type="date" /></label>
+          <label>Find commit<select id="commit-picker"></select></label>
+          <label>Manual commits<input id="commit-filter" placeholder="comma-separated hashes or short hashes" /></label>
+        </div>
+        <div id="selected-commits" class="chips"></div>
+        <div class="actions">
+          <button id="apply-filters">Apply filters</button>
+          <button id="clear-filters" class="secondary">Clear</button>
+        </div>
+      </section>
+
+      <section class="panel author-merge">
+        <h2>Author merge</h2>
+        <div class="grid two">
+          <label>Target author<select id="merge-target"></select></label>
+          <label>Source authors<select id="merge-sources" multiple size="5"></select></label>
+        </div>
+        <div class="actions">
+          <button id="merge-authors" type="button">Merge selected authors</button>
+          <button id="reset-authors" class="secondary" type="button">Reset manual merges</button>
+        </div>
+        <div id="author-aliases" class="alias-list"></div>
+        <small>Mailmap aliases are applied during analysis; manual merges can be reset by rebuilding author data from the repository.</small>
+      </section>
+
+      <section class="kpis">
+        <article><span>Added</span><strong id="kpi-added">0</strong></article>
+        <article><span>Removed</span><strong id="kpi-removed">0</strong></article>
+        <article><span>Growth</span><strong id="kpi-growth">0</strong></article>
+        <article><span>Churn</span><strong id="kpi-churn">0</strong></article>
+        <article><span>Modifications</span><strong id="kpi-mods">0</strong></article>
+        <article><span>Frequency</span><strong id="kpi-frequency">0%</strong></article>
+      </section>
+
+      <section class="panel wide">
+        <div class="section-title">
+          <h2>Timeline</h2>
+          <span id="commit-count">0 commits in set</span>
+        </div>
+        <div id="timeline" class="timeline"></div>
+      </section>
+
+      <section class="panel wide">
+        <div class="section-title">
+          <h2>Hotspots: files and directories</h2>
+          <span id="object-page-info">0 objects</span>
+        </div>
+        <div class="table-tools">
+          <input id="object-search" placeholder="Search files or directories" />
+          <button id="prev-objects" class="secondary" type="button">Previous</button>
+          <button id="next-objects" class="secondary" type="button">Next</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Type</th><th>Path</th><th>Added</th><th>Removed</th><th>Growth</th><th>Churn</th><th>Mods</th><th>Freq</th><th>Rate</th></tr></thead>
+            <tbody id="objects-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel wide">
+        <h2>Author ownership for selected object</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Author</th><th>Email</th><th>Modifications</th><th>Churn</th><th>Ownership</th></tr></thead>
+            <tbody id="authors-table"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel wide help">
+        <h2>Metric guide</h2>
+        <p><strong>Growth</strong> is added lines minus removed lines. <strong>Churn</strong> is added plus removed lines. <strong>Modification frequency</strong> is commits that changed an object divided by commits in the selected set. <strong>Ownership</strong> is an author’s churn divided by total churn for the selected object.</p>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
